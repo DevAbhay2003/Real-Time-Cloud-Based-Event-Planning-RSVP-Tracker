@@ -4,7 +4,7 @@ from backend.config import settings
 from backend.database import Base, engine, SessionLocal
 from backend.routes import (
     auth_routes, event_routes, rsvp_routes, 
-    announcement_routes, notification_routes
+    announcement_routes, notification_routes, analytics_routes
 )
 from realtime.realtime_service import manager, compute_event_counts
 
@@ -29,6 +29,7 @@ app.include_router(event_routes.router)
 app.include_router(rsvp_routes.router)
 app.include_router(announcement_routes.router)
 app.include_router(notification_routes.router)
+app.include_router(analytics_routes.router)
 
 @app.websocket("/ws/events/{event_id}")
 async def websocket_event_dashboard(websocket: WebSocket, event_id: str):
