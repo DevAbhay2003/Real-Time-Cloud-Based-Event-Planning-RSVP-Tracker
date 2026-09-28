@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from backend.config import settings
 from backend.database import Base, engine
-from backend.routes import auth_routes
+from backend.routes import auth_routes, event_routes
 
 Base.metadata.create_all(bind=engine)
 
@@ -21,6 +21,7 @@ app.add_middleware(
 )
 
 app.include_router(auth_routes.router)
+app.include_router(event_routes.router)
 
 @app.get("/health", tags=["Health"])
 def health_check():
