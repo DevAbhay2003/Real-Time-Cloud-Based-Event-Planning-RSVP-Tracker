@@ -1,8 +1,9 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from backend.config import settings
-from backend.database import Base, engine
+from backend.database import Base, engine, SessionLocal
 from backend.routes import auth_routes, event_routes, rsvp_routes
+from realtime.realtime_service import manager, compute_event_counts
 
 Base.metadata.create_all(bind=engine)
 
@@ -23,6 +24,25 @@ app.add_middleware(
 app.include_router(auth_routes.router)
 app.include_router(event_routes.router)
 app.include_router(rsvp_routes.router)
+
+@app.websocket("/ws/events/{event_id}")
+async def websocket_event_dashboard(websocket: WebSocket, event_id: str):
+    await manager.connect(websocket, event_id)
+    db = SessionLocal()
+    try:
+        # Push initial snapshot
+        counts = compute_event_counts(db, event_id)
+        await websocket.send_json({"type": "INITIAL_STATE", "counts": counts})
+        
+        while True:
+            # Keep alive and listen for client pings
+            data = await websocket.receive_text()
+            if data == "ping":
+                await websocket.send_text("pong")
+    except WebSocketDisconnect:
+        manager.disconnect(websocket, event_id)
+    finally:
+        db.close()
 
 @app.get("/health", tags=["Health"])
 def health_check():
