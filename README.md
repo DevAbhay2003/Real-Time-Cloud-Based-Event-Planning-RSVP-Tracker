@@ -296,3 +296,58 @@ All course capstone deliverables and interview prep resources are located in the
 
 ## License
 Distributed under the MIT License. See `LICENSE` for more information.
+
+---
+
+## 🚀 How to Run the Server and Frontend (Quick Start Guide)
+
+Follow these simple steps to run both the FastAPI backend and React frontend locally:
+
+### 1. Start the Backend Server (Terminal 1)
+Open a terminal in the project root directory (`F:\Git\AI\sigmoid`):
+
+```bash
+# Install dependencies (first time only)
+pip install -r requirements.txt
+
+# Start FastAPI backend server
+python -m uvicorn backend.main:app --port 8000
+```
+
+> **Tip for Windows PowerShell:** If you want automatic reloading during development, use:  
+> `python -m uvicorn backend.main:app --reload --port 8000`  
+> *(Note: In Git Bash, run without `--reload` to prevent mintty terminal EOF signals)*
+
+- **Backend API:** `http://localhost:8000`
+- **Interactive Swagger Docs:** `http://localhost:8000/docs`
+
+---
+
+### 2. Start the Frontend Web App (Terminal 2)
+Open a **second terminal** and navigate to the `frontend/` folder:
+
+```bash
+cd frontend
+
+# Install Node packages (first time only)
+npm install
+
+# Start Vite React dev server
+npm run dev
+```
+
+- **Frontend Application:** Open **[`http://localhost:5173`](http://localhost:5173)** in your browser!
+
+---
+
+### 3. Demo Credentials for Immediate Testing
+
+The database automatically pre-seeds demo accounts on server startup:
+
+| Persona | Email | Password | Role / Access |
+| :--- | :--- | :--- | :--- |
+| **Organizer** | `organizer@cloud.edu` | `Password123!` | Organizer Hub, Create Events, VIP Invites, Kiosk Scanner |
+| **Attendee** | `attendee@cloud.edu` | `Password123!` | Attendee Portal, Discover Events, Live RSVP |
+
+You can also click **"Register"** in the app to create your own custom accounts.
+
