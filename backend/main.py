@@ -1,7 +1,9 @@
+from contextlib import asynccontextmanager
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from backend.config import settings
 from backend.database import Base, engine, SessionLocal
+from backend.seed import seed_default_data
 from backend.routes import (
     auth_routes, event_routes, rsvp_routes, 
     announcement_routes, notification_routes, 
@@ -9,12 +11,17 @@ from backend.routes import (
 )
 from realtime.realtime_service import manager, compute_event_counts
 
-Base.metadata.create_all(bind=engine)
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    Base.metadata.create_all(bind=engine)
+    seed_default_data()
+    yield
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
     version=settings.VERSION,
-    description="Industry-Grade Real-Time Cloud-Based Event Planning & RSVP Tracker"
+    description="Industry-Grade Real-Time Cloud-Based Event Planning & RSVP Tracker",
+    lifespan=lifespan
 )
 
 app.add_middleware(

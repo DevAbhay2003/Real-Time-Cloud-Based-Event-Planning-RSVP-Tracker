@@ -1,15 +1,26 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import OrganizerDashboard from './pages/OrganizerDashboard';
 import AttendeeEvents from './pages/AttendeeEvents';
 import PublicTokenRSVP from './pages/PublicTokenRSVP';
 import CheckinKiosk from './pages/CheckinKiosk';
+import AuthBar from './components/AuthBar';
 import { Cloud, Calendar, LayoutDashboard, QrCode } from 'lucide-react';
 
 export default function App() {
+  const [authKey, setAuthKey] = useState(0);
+
+  const handleAuthChange = () => {
+    // Force re-render of active components when user switches role
+    setAuthKey((prev) => prev + 1);
+  };
+
   return (
     <BrowserRouter>
       <div className="min-h-screen bg-slate-50 flex flex-col font-sans">
+        {/* Top 1-Click Role Switcher & Auth Bar */}
+        <AuthBar onAuthChange={handleAuthChange} />
+
         {/* Navigation Bar */}
         <header className="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
           <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
@@ -32,7 +43,7 @@ export default function App() {
         </header>
 
         {/* Content View */}
-        <main className="flex-1">
+        <main className="flex-1" key={authKey}>
           <Routes>
             <Route path="/" element={<OrganizerDashboard />} />
             <Route path="/organizer" element={<OrganizerDashboard />} />
