@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=sqlite:///./events_cloud.db
+      - JWT_SECRET_KEY=production-super-secret-jwt-key-change-this
+      - ALGORITHM=HS256
+      - ENVIRONMENT=production
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped
