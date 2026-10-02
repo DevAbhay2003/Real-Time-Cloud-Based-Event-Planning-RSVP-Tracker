@@ -350,4 +350,7 @@ The database automatically pre-seeds demo accounts on server startup:
 | **Attendee** | `attendee@cloud.edu` | `Password123!` | Attendee Portal, Discover Events, Live RSVP |
 
 You can also click **"Register"** in the app to create your own custom accounts.
-
+-------
+Author
+----
+Abhishek Basu — Embedded Systems Student GitHub: [DevAbhay2003](https://github.com/DevAbhay2003?tab=repositories) · LinkedIn: [Abhishek Basu](https://www.linkedin.com/in/abhishek-basu-68b1b1342/)
